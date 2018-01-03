@@ -3,12 +3,30 @@
 	background: black;
 	width:800;
 	height:600;
+	z-index: -2;	
 }
 #root{
 	position: fixed;
 }
 .node{
 	color:white;
-	position: relative;
+	position: absolute;
 	display: flex;
+	border-bottom: 1px solid;
+	border-color: white;
+}
+.divnode{
+	color:white;
+	position: absolute;
+	display: flex;
+}
+.coloredLine{
+	transform-origin: top left;
+	position: absolute;
+	width: 100px;
+}
+connection {
+	color: red;
+	z-index: -1;
+	border-radius: 100%;
 }
