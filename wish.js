@@ -20,7 +20,7 @@ $( document ).ready(function() {
 	
 
 	$("#workspace")
-	.mousedown(function(event) {
+	.on("mousedown",function(event){
 	    isDragging = false;
 	    isPressed = true;
 	    clickMousePosition=[
