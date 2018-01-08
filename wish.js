@@ -1,10 +1,17 @@
-var DELAY = 400, clicks = 0, timer = null;
 var isDragging = false;
 var isPressed = false;
 var clickMousePosition=[0,0];
 
 var connections=$('connection, inner');
 
+var key_pressed={};
+
+$(window).keyup(function(event){
+  key_pressed[String(event.which)]=false; 
+});
+$(window).keydown(function(event){
+  key_pressed[String(event.which)]=true; 
+});
 
 $( document ).ready(function() {
 	 
@@ -14,7 +21,6 @@ $( document ).ready(function() {
 	function draw() {
 	  // call again next time we can draw
 	  requestAnimationFrame(draw);
-	  
 	}
 
 	
@@ -106,38 +112,67 @@ function addColoredLine(parent,child,color){
 
 function clickmanagement(event) {
 	if (!isDragging){
-		clicks++;
 
-		if(clicks === 1) {
+		if(key_pressed[65]) {
 
-            timer = setTimeout(function(object) {
+            result = prompt("New Node","new content");
+            if (result!="" && result!=null){
+            	$(this).parent().append('<div class="divnode"><p class="node">'+result+'</p></div>');
+            	$(".node")
+            	.unbind() //to prevent multiple listeners on already created divs
+				.mouseup(clickmanagement)
+				.dblclick(function(event){
+					event.preventDefault();  //cancel system double-click event
+				});
 
-                result = prompt("New Node","new content");
-                if (result!="" && result!=null){
-                	object.append('<div class="divnode"><p class="node">'+result+'</p></div>');
-                	$(".node")
-                	.unbind() //to prevent multiple listeners on already created divs
-					.mouseup(clickmanagement)
-					.dblclick(function(event){
-						event.preventDefault();  //cancel system double-click event
-					});
+				calculateSubPositions($("#root"),0,360);
 
-					calculateSubPositions($("#root"),0,360);
-                }
-                clicks = 0;             //after action performed, reset counter
-            }, DELAY,$(this).parent());
+            }
+            //reset all the keypressed because you have lost focus on the current window and you can no longer trust the key_pressed variable
+			key_pressed={};
+        
 
-        } else {
+        }
+        else if(key_pressed[67]){
+        	if ($(this).parent().attr('id')==="root"){
+        		alert("You can not collapse the Root Node");
+        		return;
+        	}
+        	if (confirm("Do you really want to delete this node and collapse its subnodes?")){
+        		
+        		$(this).parent().children('.divnode').each(function(){
+        			$(this).appendTo($(this).parent().parent());
+        		});
 
-            clearTimeout(timer);    //prevent single-click action
+            	$(this).parent().remove();
+
+				calculateSubPositions($("#root"),0,360);
+            }
+            //reset all the keypressed because you have lost focus on the current window and you can no longer trust the key_pressed variable
+            key_pressed={};
+        } 
+        else if(key_pressed[68]){
+        	if ($(this).parent().attr('id')==="root"){
+        		alert("You can not delete the Root Node");
+        		return;
+        	}
+        	if (confirm("Do you really want to delete this node?")){
+            	$(this).parent().remove();
+
+				calculateSubPositions($("#root"),0,360);
+            }
+            //reset all the keypressed because you have lost focus on the current window and you can no longer trust the key_pressed variable
+            key_pressed={};
+        }
+        else {
+
             object=$(this);
             text=object.text().trim();
 			object.text(prompt("Edit Node",text));
 			if (object.text()===""){
 				object.text(text);
 			}
-            clicks = 0;             //after action performed, reset counter
-		
+
 		}
 	}
 }
