@@ -5,6 +5,8 @@ Water In Space Handler
 git clone the repositorie and double click index.html
 
 # USAGE
-- click on an element to add a leaf to it.
+- A+LeftClick on an element to add a leaf to it.
+- D+LeftClick on an element to delete it and all of its leaves.
+- C+LeftClick on an element to delete it and move all of its leaves one level up.
 - double click on an element to change its name.
 - click and drag everywhere to navigate.
