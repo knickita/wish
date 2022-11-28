@@ -2,7 +2,7 @@
 Water In Space Handler
 
 # SETUP
-git clone the repositorie and double click index.html
+git clone the repository and double click index.html
 
 # USAGE
 - A+LeftClick on an element to add a leaf to it.
